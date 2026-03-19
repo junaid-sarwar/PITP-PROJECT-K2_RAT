@@ -1,6 +1,5 @@
 # 🏔️ K2 RAT - Advanced Persistent Threat Simulation
-### NED University Cybersecurity Project 2026
-### 🇵🇰 Made in Pakistan
+### PITP Cybersecurity Project 2026
 
 ---
 
